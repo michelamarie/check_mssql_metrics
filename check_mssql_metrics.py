@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 # Naemon / Nagios module to fetch size of a given MS SQL database, then alert if above a given threshold
-# By Michela Toscano, IONICA
+# By Michela Toscano
 
 # mssql-python module is required. Install with 'pip3 install mssql-python'.
 
