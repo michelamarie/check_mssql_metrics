@@ -5,7 +5,7 @@ This is an early version of the plug-in. Only the database size part of it is im
 
 Please let me know if you experience any issues when using the plug-in by making an issue in the Github project for it.
 
-This script requires the mssql_python module in order to operate. Install it with 'pip3 install mssql-python'.
+This script requires Python 3.2 or newer (which includes the argparse module), and the mssql_python module. Install it with 'pip3 install mssql-python'.
 
 Usage: check_mssql_metrics.py [-h] -s server -d database -u username -p password [-e encrypt] [-t trust] [-w warnsize] -m maxsize
 
