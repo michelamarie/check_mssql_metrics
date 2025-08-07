@@ -1,7 +1,7 @@
 # check_mssql_metrics
 Naemon and Nagios -compatible module for fetching metrics of Microsoft SQL Server databases.
 
-This is an early version of the plug-in. Only the database size part of it is implemented at the moment, but more functionality is on the way!
+This is an early version of the plug-in. Only the database size, filegroup size, and memory usage parts of it is implemented at the moment, but more functionality is on the way!
 
 Please let me know if you experience any issues when using the plug-in by making an issue in the Github project for it.
 
@@ -13,8 +13,10 @@ REQUIREMENTS
 * The MSSQL user employed by the script must have the 'VIEW SERVER STATE' permission on the 'master' database, and 'CONNECT' and 'SELECT' privileges on each database it gathers metrics on.
 
 To grant VIEW SERVER STATE permission, run the following SQL as an administrative user:
-USE MASTER
-GRANT VIEW SERVER STATE TO [username]
+
+USE MASTER;
+
+GRANT VIEW SERVER STATE TO [username];
 
 
 Usage: check_mssql_metrics.py [-h] -s server -d database -u username -p password [-e encrypt] [-t trust] [-w warnsize] -m maxsize
