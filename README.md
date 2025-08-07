@@ -8,11 +8,11 @@ Please let me know if you experience any issues when using the plug-in by making
 
 ## Requirements
 
-* This script requires Python 3.2 or newer (which includes the argparse module), and the mssql_python module. Install it with 'pip3 install mssql-python'.
-* mssql-python requires the libltdl library. On Debian and Ubuntu systems, install that with 'apt install libltdl7'.
+* This script requires Python 3.2 or newer (which includes the argparse module), and the mssql_python module. Install it with `pip3 install mssql-python`.
+* mssql-python requires the libltdl library. On Debian and Ubuntu systems, install that with `apt install libltdl7`.
 * The MSSQL user employed by the script must have the 'VIEW SERVER STATE' permission on the 'master' database, and 'CONNECT' and 'SELECT' privileges on each database it gathers metrics on.
 
-To grant VIEW SERVER STATE permission, run the following SQL as an administrative user:
+To grant the VIEW SERVER STATE permission, run the following SQL as an administrative user:
 
 ```
 USE MASTER;
@@ -45,3 +45,7 @@ check_mssql_metrics.py [-h] -s server -d database -u username -p password [-e en
   -w, --warnsize Warning database size threshold.
 
   -m, --maxsize Critical database size threshold.
+
+## License
+
+check_mssql_metrics is licensed under the [AGPL 3.0 license](https://github.com/michelamarie/check_mssql_metrics?tab=AGPL-3.0-1-ov-file#readme).
