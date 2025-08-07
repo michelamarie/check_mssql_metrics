@@ -44,17 +44,17 @@ cursor = authenticate.cursor()
 
 ### Note: output from mssql-python is as one list item in this case. So we convert it to a string, then back to a list with multiple comma-delimited items
 
+
+## Total database size
+
 # Run stored procedure to fetch space used of database in use (as defined in connection string)
 cursor.execute("EXEC sp_spaceused")
 
 # Fetch the output of the space used stored procedure
-space_used = cursor.fetchall()
-
-# Transform the strange one-item list output of the stored procedure to a string data structure type.
-space_list = str(space_used)
+space_used = str(cursor.fetchall())
 
 # Transform that new string to a comma-delimited list
-delimited = space_list.split(',')
+delimited = space_used.split(',')
 
 # Set the value of the database size list item in a variable
 database_size = delimited[1]
@@ -65,11 +65,68 @@ dbfloat = database_size[2:9]
 # Transform slice output 
 dbfloat = float(dbfloat)
 
+
+## Filegroup details
+
+# Query filegroups from database
+cursor.execute("SELECT name,(size/1024) FROM sys.database_files;")
+
+# Set value returned from query in variable
+all_filegroups = cursor.fetchall()
+
+# Set details of the first filegroup (most likely to be the "primary" filegroup in a variable.
+filegroup1 = all_filegroups[0]
+
+# Put the primary filegroup name in a variable
+filegroup_name = re.findall(r"'([^']*)'", str(filegroup1))
+
+# Put the filegroup size in a variable
+filegroup_size = float(filegroup1[1])
+
+
+## Memory details
+
+# Query memory utilisation
+cursor.execute("SELECT (committed_kb/1024), (committed_target_kb/1024) FROM sys.dm_os_sys_info;")
+
+# Fetch output of memory utilisation query
+memory_utilisation = str(cursor.fetchall())
+
+# Make a comma-delimited string
+memory_utilisation_delimited = memory_utilisation.split(',')
+
+actual_memory_used_delimited = memory_utilisation_delimited[0]
+actual_memory_used = actual_memory_used_delimited[5:12]
+
+# Query memory utilisation
+cursor.execute("SELECT (committed_kb/1024), (committed_target_kb/1024) FROM sys.dm_os_sys_info;")
+
+# Fetch output of memory utilisation query
+memory_utilisation = str(cursor.fetchall())
+
+# Make a comma-delimited string
+memory_utilisation_delimited = memory_utilisation.split(',')
+
+# Put second item in string in variable
+target_memory_delimited = memory_utilisation_delimited[1]
+
+# Slice number characters from value into new variable
+target_memory = target_memory_delimited[1:6]
+
+
 # Close the connection. Without this, Python may throw a segmentation fault with older versions of mssql_python.
 authenticate.close()
 
+
 # Print the list item we want to see (the space used by the database)
-print(dbfloat)
+print("---------------------------------------------")
+print("Database size: " + str(dbfloat) + " MB")
+print("Memory used: " + actual_memory_used + " MB")
+print("Target memory: " + target_memory + " MB")
+print("Size of filegroup " + str(filegroup_name) + ": " + str(filegroup_size) + " MB")
+print("---------------------------------------------")
+print("")
+
 
 if dbfloat < max_size:
     print('OK: Database size within specified parameters')

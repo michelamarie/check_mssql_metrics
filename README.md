@@ -8,9 +8,13 @@ Please let me know if you experience any issues when using the plug-in by making
 
 REQUIREMENTS
 
-This script requires Python 3.2 or newer (which includes the argparse module), and the mssql_python module. Install it with 'pip3 install mssql-python'.
+* This script requires Python 3.2 or newer (which includes the argparse module), and the mssql_python module. Install it with 'pip3 install mssql-python'.
+* mssql-python requires the libltdl library. On Debian and Ubuntu systems, install that with 'apt install libltdl7'.
+* The MSSQL user employed by the script must have the 'VIEW SERVER STATE' permission on the 'master' database, and 'CONNECT' and 'SELECT' privileges on each database it gathers metrics on.
 
-mssql-python requires the libltdl library. On Debian and Ubuntu systems, install that with 'apt install libltdl7'.
+To grant VIEW SERVER STATE permission, run the following SQL as an administrative user:
+USE MASTER
+GRANT VIEW SERVER STATE TO [username]
 
 
 Usage: check_mssql_metrics.py [-h] -s server -d database -u username -p password [-e encrypt] [-t trust] [-w warnsize] -m maxsize
